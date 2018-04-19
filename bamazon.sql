@@ -25,10 +25,10 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Dog Training Guide", "Pet Products", 17.99, 5);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Cat Care Guide", "Pet Products", 12.89, 5);
+VALUES ("Cat Care Guide", "Pet Products", 12.89, 4);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("4 Person Tent", "Outdoor Recreation", 58.79, 10);
+VALUES ("4 Person Tent", "Outdoor Recreation", 58.79, 4);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Lightweight Sleeping Bag", "Outdoor Recreation", 38.68, 10);
@@ -37,7 +37,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Camping Stove", "Outdoor Recreation", 29.79, 10);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Mini Water Filtration System", "Outdoor Recreation", 15.88, 10);
+VALUES ("Mini Water Filtration System", "Outdoor Recreation", 15.88, 3);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Swiss Army Knife", "Outdoor Recreation", 18.69, 10);
