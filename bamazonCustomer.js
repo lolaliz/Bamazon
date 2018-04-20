@@ -11,35 +11,34 @@ var connection = mysql.createConnection({
 
   connection.connect(function(err) {
     if (err) throw err;
-    console.log(`connected as ${connection.threadId}`)
     console.log("******** Welcome to the Bamazon Store **********")
-    // run the start function after the connection is made to display the products
     start()
   });
 
-  function start () {
-      inquirer
-      .prompt({
-          name: "productDisplay",
-          type:"rawlist",
-          message: "Would you like to see our products?",
-          choices: ["Yes", "No"]
-      })
-      .then(function(answer) { 
-          if(answer.productDisplay=== "Yes"){ 
-                
-                    displayProducts()
-                    purchasePrompts ()
-        
-            } else {
-                console.log("Good-bye!")
-                connection.end();
+
+function start () {
+    inquirer
+    .prompt({
+        name: "productDisplay",
+        type:"rawlist",
+        message: "Would you like to see our products?",
+        choices: ["Yes", "No"]
+    })
+    .then(function(answer) { 
+        if(answer.productDisplay=== "Yes"){ 
+                displayProducts()
+                purchasePrompts ()
+        } else {
+            console.log("Good-bye!")
+            connection.end();
             }
         })
     }
 
+
 function displayProducts (){
     var productTable = new Table({
+        head: ['Item ID #', 'Product', 'Department', 'Price'],
         chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
                , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
                , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
@@ -53,19 +52,19 @@ function displayProducts (){
                     [
                         results[i].id,
                         results[i].product_name,
-                       'Category:' + results[i].department_name,
+                        results[i].department_name,
                         '$' + results[i].price
                     ]
                 );
             }
             console.log(productTable.toString()) } else {
                 console.log ("We are out of stock!")
-            }
-})
-}
+                 }
+        })
+    }
+
 
  function purchasePrompts () {
-     // query the database for all items being sold
     connection.query("SELECT * FROM products", function(err, results) {
        if (err) throw err;  
         inquirer
@@ -73,7 +72,7 @@ function displayProducts (){
             {
             name: "productID",
             type: "input",
-            message: "Please enter the number of the product you would like to purchase.",
+            message: "Please enter the ID # of the product you would like to purchase.",
             validate: function (value){
                 if (isNaN(value) === false) {
                     return true;
@@ -98,39 +97,31 @@ function displayProducts (){
             console.log("Chosen Item ID:", customerChoiceID)
             var customerQuantity = parseInt(answer.quantity)
             console.log("Quantity requested:", customerQuantity)
-        // determine if quantity is sufficient
             purchaseCheck(customerChoiceID, customerQuantity)
+            })
         })
-    })
-}
+    }
 
-function purchaseCheck (ID, quantityRequest){
-    
-    connection.query("SELECT * FROM products WHERE id = " + ID, function(err, results) {
-        
+
+function purchaseCheck (ID, quantityRequest){ 
+    connection.query("SELECT * FROM products WHERE id = " + ID, function(err, results) { 
         if (err) throw err;
-
         if (quantityRequest <= results[0].stock_quantity){
             var total = results[0].price * quantityRequest
             var updateQ = results[0].stock_quantity - quantityRequest
-
             console.log("We have enough!")
-             //update DB
-             //needed space before WHERE
-             //var updateDB = "UPDATE products SET stock_quantity = " + updateQ + " WHERE id = " + ID
-             //console.log(updateDB)
+
             connection.query("UPDATE products SET stock_quantity = " + updateQ + " WHERE id = " + ID, function(err, results){ 
-            //console.log(updateQ)
             console.log("Your total is $" + total)
             keepShopping()
             })
         } else {
             console.log ("Insufficient quantity!") 
             start()
-        }
+            }
+        })
+    }
 
-    })
-}
 
 function keepShopping () {
     inquirer.prompt ([{
@@ -138,16 +129,17 @@ function keepShopping () {
         type: "confirm",
         message: "Would you like to keep shopping?",
         default: true
-    }]).then(function(answer){
+        }])
+    .then(function(answer){
         if (answer.moreItems)
         connection.query("SELECT * FROM products", function(err, results){
             if (err) throw err;
             console.log(results)
             purchasePrompts ()
-    })
+        })
         else {
             connection.end()
-        }
-    })
-}
+             }
+        })
+    }
 
