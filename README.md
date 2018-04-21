@@ -16,3 +16,6 @@ The manager interface first displays a menu and prompts the user to choose one o
 * [Inquirer](https://www.npmjs.com/package/inquirer#methods)
 * [MySQL](https://www.npmjs.com/package/mysql)
 * [CLI-Table](https://www.npmjs.com/package/cli-table)
+
+### Demo Video
+* [Watch Demo](https://drive.google.com/file/d/1IhvzFj3fpuhyaw6tzhIffrDmBX553jka/view)
